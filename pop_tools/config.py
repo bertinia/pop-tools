@@ -80,7 +80,8 @@ def ensure_inputdata():
             if key in indat_grid_file_keys and not os.path.lexists(val):
                 os.makedirs(os.path.dirname(val), exist_ok=True)
 
-                repo_path = f'{inputdata_repo}/{inputdata_relpath(val)}'
+##                repo_path = f'{inputdata_repo}/{inputdata_relpath(val)}'
+                repo_path = "{0}/{1}".format(inputdata_repo/inputdata_relpath(val))
                 svn_export(repo_path, val)
 
 

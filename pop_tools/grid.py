@@ -25,10 +25,11 @@ def get_grid(grid_name, scrip=False):
     """
 
     if grid_name not in grid_defs:
-        raise ValueError(
-            f"""Unknown grid: {grid_name}
-             Please select from the following: {list(grid_defs.keys())}"""
-        )
+##        raise ValueError(
+##            f"""Unknown grid: {grid_name}
+##             Please select from the following: {list(grid_defs.keys())}"""
+##        )
+        raise ValueError('Unknown grid: {0}'.format(grid_name))
 
     grid_attrs = grid_defs[grid_name]
 
@@ -70,17 +71,25 @@ def get_grid(grid_name, scrip=False):
 
     # read KMT
     kmt_flat = np.fromfile(grid_attrs['topography_fname'], dtype='>i4', count=-1)
+##    assert kmt_flat.shape[0] == (
+##        nlat * nlon
+##    ), f'unexpected dims in topography file: {grid_attrs["topography_fname"]}'
     assert kmt_flat.shape[0] == (
         nlat * nlon
-    ), f'unexpected dims in topography file: {grid_attrs["topography_fname"]}'
+    ), 'unexpected dims in topography file: {0}'.format(grid_attrs["topography_fname"])
+
     assert kmt_flat.max() <= len(z_t), 'Max KMT > length z_t'
     KMT = kmt_flat.reshape(grid_attrs['lateral_dims']).astype(np.int32)
 
     # read REGION_MASK
     region_mask_flat = np.fromfile(grid_attrs['region_mask_fname'], dtype='>i4', count=-1)
+##    assert region_mask_flat.shape[0] == (
+##        nlat * nlon
+##    ), f'unexpected dims in region_mask file: {grid_attrs["region_mask_fname"]}'
     assert region_mask_flat.shape[0] == (
         nlat * nlon
-    ), f'unexpected dims in region_mask file: {grid_attrs["region_mask_fname"]}'
+    ), 'unexpected dims in region_mask file: {0}'.format(grid_attrs["region_mask_fname"])
+
     REGION_MASK = region_mask_flat.reshape(grid_attrs['lateral_dims']).astype(np.int32)
 
     # output dataset
@@ -231,7 +240,7 @@ def get_grid(grid_name, scrip=False):
             },
         )
 
-    grid_attrs.update({'title': f'{grid_name} grid'})
+    grid_attrs.update({'title': '{0} grid'.format(grid_name)})
     dso.attrs = grid_attrs
 
     return dso

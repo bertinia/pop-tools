@@ -106,7 +106,7 @@ def region_mask_3d(grid_name, mask_name=None, region_defs=None):
                     mask_and = mask_or & mask_and
 
                 else:
-                    raise ValueError(f'unknown criteria type: {crit_type}')
+                    raise ValueError('unknown criteria type: {0}'.format(crit_type))
 
             # update mask logic
             mask = mask | mask_and
@@ -150,11 +150,12 @@ def _get_region_defititions(ds, grid_name, mask_name):
         return {k: [{'match': {'REGION_MASK': [v]}}] for k, v in zip(region_names, region_index)}
     else:
         if mask_name not in all_region_defs[grid_name]:
-            raise ValueError(
-                f'''unknown region mask: {mask_name}
-                             the following regions masks are defined: {list_region_masks(grid_name)}
-                             '''
-            )
+##            raise ValueError(
+##                f'''unknown region mask: {mask_name}
+##                             the following regions masks are defined: {list_region_masks(grid_name)}
+##                             '''
+##            )
+            raise ValueError('Unknown region mask: {0}'.format(mask_name))
 
         return all_region_defs[grid_name][mask_name]
 
